@@ -1,10 +1,11 @@
 //import logo from "./logo.svg";
 import "./App.css";
+import Movies from './components/movie';
 
 function App() {
   return (
     <main className="container">
-      <h1>Hello World.....!!</h1>
+      <Movies/>
     </main>
   );
 }
