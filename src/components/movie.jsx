@@ -21,6 +21,18 @@ class Movies extends Component {
         this.setState({ movies: getMovies(), genres: genres});
     }
     
+    getPagedData = () =>{
+        const { pageSize, currentPage, selectedGenre, sortColumn, movies: allMovies } = this.state;
+        
+        const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
+        
+        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+            
+        const movies = paginate(sorted, currentPage, pageSize);
+        
+        return { totalCount: filtered.length, data: movies };
+    }
+    
     handleDelete = (movie) => {
         //console.log(movie);   
         const movies = this.state.movies.filter(m => m._id !== movie._id); 
@@ -53,17 +65,13 @@ class Movies extends Component {
     
     render() {
         const { length: count } = this.state.movies;
-        const { pageSize, currentPage, selectedGenre, sortColumn, movies: allMovies } = this.state;
+        const { pageSize, currentPage, sortColumn } = this.state;
         
         if(count === 0) 
-            return <p>There are no movies in the Database...</p>;
+            return <p>There are no movies in the Database...</p>;      
             
-        const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
-        
-        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-            
-        const movies = paginate(sorted, currentPage, pageSize);    
-            
+        const { totalCount, data: movies } = this.getPagedData();
+                
         return (
             <div className="row">
                 <div className="col-3">
@@ -74,7 +82,7 @@ class Movies extends Component {
                     />
                 </div>
                 <div className="col">
-                    <p>Showing { filtered.length } numbers of movies in the Database.</p>
+                    <p>Showing { totalCount } numbers of movies in the Database.</p>
                     
                     <MoviesTable 
                         onDelete = { this.handleDelete } 
@@ -85,7 +93,7 @@ class Movies extends Component {
                     />
                     
                     <Pagination 
-                        itemCount={ filtered.length } 
+                        itemCount={ totalCount } 
                         pageSize={ pageSize }
                         currentPage={ currentPage }
                         onPageChange={ this.handlePageChange } 
