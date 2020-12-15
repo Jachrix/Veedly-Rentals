@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Input from './common/input';
 
 class LoginForm extends Component {
     state = {
@@ -32,30 +33,20 @@ class LoginForm extends Component {
         return (
             <div>
                 <h3>Login Form</h3>
-                <form onSubmit={this.handleSubmit} >
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <input                              
-                            autoFocus 
-                            id="username"
-                            name="username"
-                            value={ account.username } 
-                            type="text" 
-                            className="form-control"
-                            onChange={ this.handleChange }
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input 
-                            id="password"
-                            name="password"
-                            value={ account.password } 
-                            type="text" 
-                            className="form-control"
-                            onChange={ this.handleChange }
-                        />
-                    </div>
+                <form onSubmit={ this.handleSubmit } >
+                    <Input 
+                        name="username" 
+                        value={ account.username } 
+                        label="Username" 
+                        onChange={ this.handleChange } 
+                    />
+                    <Input 
+                        name="password" 
+                        value={ account.password } 
+                        label="Password" 
+                        onChange={ this.handleChange } 
+                    />
+                    
                     <button className="btn btn-primary">Login</button>
                 </form>
             </div>
