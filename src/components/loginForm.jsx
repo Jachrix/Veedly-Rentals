@@ -13,7 +13,16 @@ class LoginForm extends Component {
     // }
     
     validate = () => {
-        return { username: 'Username id required.....'};
+        const errors = {};
+        
+        const { account } = this.state;
+        
+        if(account.username.trim() === '') 
+            errors.username = 'Username is required';
+        if(account.password.trim() === '') 
+            errors.password = 'Password is required';
+            
+        return Object.keys(errors).length === 0 ? null : errors;
     }
     
     handleSubmit = e => {
@@ -23,6 +32,7 @@ class LoginForm extends Component {
         // ref ={this.username} as attribute in specified element
         
         const errors = this.validate();
+        console.log(errors);
         this.setState({ errors });
         if (errors) return;
         
